@@ -6,19 +6,30 @@ output: html_document
 ---
 ## Question 1
 ```{r}
-
+# First, I load the dataset
 data("penguins", package = "palmerpenguins")
 
 ```
-
-The name of the dataset is called penguins, the name of each column is species, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, sex, year.
-
-
+# Then I use inline R code to write a short description
+The name of the dataset is called penguins, the name of each column is `r names(penguins)`.             
+The size of the dataset is `r nrow(penguins)` rows and `r ncol(penguins)` columns.                      
+The mean fipper length is `r mean(penguins$flipper_length_mm, na.rm = TRUE)`.
 
 
 
 ```{r}
-
+# After that I import the library and draw the scatterplot required!
+library(tidyverse)
+plotrequired = ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) +
+  geom_point() +
+  labs(
+    x = "Bill Length",
+    y = "Flipper Length",
+    title = "Scatterplot of Flipper Length and Bill Length"
+  )
+plotrequired
+# Then I save the plot I have produced!
+ggsave(filename = "scatterplot_penguins.png", plot = plotrequired)
 ```
 
 
