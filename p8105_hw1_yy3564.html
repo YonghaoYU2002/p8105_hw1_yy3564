@@ -397,6 +397,84 @@ ggsave(filename = &quot;scatterplot_penguins.png&quot;, plot = plotrequired)</co
 <pre><code>## Saving 7 x 5 in image</code></pre>
 <pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
 ## (`geom_point()`).</code></pre>
+<div id="question-2" class="section level2">
+<h2>Question 2</h2>
+<pre class="r"><code># Set the random seed and load the tidyverse package
+set.seed(200)
+library(tidyverse)
+
+# First, create a random sample of size 10
+sample = rnorm(10)
+
+# Second, create a logical vector
+logical = sample &gt; 0
+
+# Third, create a character vector
+character = paste(&quot;Value&quot;, 1:10)
+
+# Last, create a factor vector
+factor = factor(sample(c(&quot;Level 1&quot;, &quot;Level 2&quot;, &quot;Level 3&quot;), 10, replace = TRUE))
+
+# Combine them into one data frame
+data_frame = data.frame(
+  Sample = sample,
+  Logical = logical,
+  Character = character,
+  Factor = factor
+)
+
+# Display the data frame
+print(data_frame)</code></pre>
+<pre><code>##         Sample Logical Character  Factor
+## 1   0.08475635    TRUE   Value 1 Level 3
+## 2   0.22646034    TRUE   Value 2 Level 3
+## 3   0.43255650    TRUE   Value 3 Level 2
+## 4   0.55806524    TRUE   Value 4 Level 1
+## 5   0.05975527    TRUE   Value 5 Level 2
+## 6  -0.11464087   FALSE   Value 6 Level 2
+## 7  -1.02057835   FALSE   Value 7 Level 3
+## 8  -0.29705130   FALSE   Value 8 Level 2
+## 9   0.16815003    TRUE   Value 9 Level 3
+## 10  1.41987233    TRUE  Value 10 Level 3</code></pre>
+<p>Then calculate the mean for each columns one by one to check whether
+there are any problems during the calculations!</p>
+<pre class="r"><code>Sample_mean = mean(data_frame %&gt;% pull(Sample))
+Sample_mean</code></pre>
+<pre><code>## [1] 0.1517346</code></pre>
+<pre class="r"><code>Logical_mean = mean(data_frame %&gt;% pull(Logical))
+Logical_mean</code></pre>
+<pre><code>## [1] 0.7</code></pre>
+<pre class="r"><code>Character_mean = mean(data_frame %&gt;% pull(Character))</code></pre>
+<pre><code>## Warning in mean.default(data_frame %&gt;% pull(Character)):
+## 参数不是数值也不是逻辑值：返回NA</code></pre>
+<pre class="r"><code>Character_mean</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>Factor_mean = mean(data_frame %&gt;% pull(Factor))</code></pre>
+<pre><code>## Warning in mean.default(data_frame %&gt;% pull(Factor)):
+## 参数不是数值也不是逻辑值：返回NA</code></pre>
+<pre class="r"><code>Factor_mean</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>When I print out these values, it shows obviously that the random
+sample and logical vector work and the charactor vector and the factor
+vector do not work!!!</p>
+<pre class="r"><code># Explicitly convert variables to numeric using pull function
+numeric_logical = as.numeric(data_frame %&gt;% pull(Logical))
+numeric_character = as.numeric(data_frame %&gt;% pull(Character))  </code></pre>
+<pre><code>## Warning: 强制改变过程中产生了NA</code></pre>
+<pre class="r"><code>numeric_factor = as.numeric(data_frame %&gt;% pull(Factor))</code></pre>
+<pre class="r"><code># not checking the outputs 
+# numeric_logical
+# numeric_character
+# numeric_factor</code></pre>
+<p>Logical to Numeric: Converting TRUE to 1 and FALSE to 0, then take
+the mean of numerous 0 and 1!!!!!</p>
+<p>Character to Numeric: Converting makes all entries NA because the
+strings can’t be converted to numbers!!!!!</p>
+<p>Factor to Numeric: Converting the factor levels to underlying
+integer, which allows for mean calculations but it is meaningless
+because it is just some meaningless numbers and it does not have the
+original categorical interpretation anymore!!!!!</p>
+</div>
 </div>
 
 

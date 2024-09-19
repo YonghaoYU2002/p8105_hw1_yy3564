@@ -32,10 +32,74 @@ plotrequired
 ggsave(filename = "scatterplot_penguins.png", plot = plotrequired)
 ```
 
-
+## Question 2
 
 ```{r}
+# Set the random seed and load the tidyverse package
+set.seed(200)
+library(tidyverse)
+
+# First, create a random sample of size 10
+sample = rnorm(10)
+
+# Second, create a logical vector
+logical = sample > 0
+
+# Third, create a character vector
+character = paste("Value", 1:10)
+
+# Last, create a factor vector
+factor = factor(sample(c("Level 1", "Level 2", "Level 3"), 10, replace = TRUE))
+
+# Combine them into one data frame
+data_frame = data.frame(
+  Sample = sample,
+  Logical = logical,
+  Character = character,
+  Factor = factor
+)
+
+# Display the data frame
+print(data_frame)
 
 ```
+Then calculate the mean for each columns one by one to check whether there are any problems during the calculations!
 
+```{r}
+Sample_mean = mean(data_frame %>% pull(Sample))
+Sample_mean
+```
+```{r}
+Logical_mean = mean(data_frame %>% pull(Logical))
+Logical_mean
+```
 
+```{r}
+Character_mean = mean(data_frame %>% pull(Character))
+Character_mean
+```
+
+```{r}
+Factor_mean = mean(data_frame %>% pull(Factor))
+Factor_mean
+```
+When I print out these values, it shows obviously that the random sample and logical vector work and the charactor vector and the factor vector do not work!!!
+
+```{r}
+# Explicitly convert variables to numeric using pull function
+numeric_logical = as.numeric(data_frame %>% pull(Logical))
+numeric_character = as.numeric(data_frame %>% pull(Character))  
+numeric_factor = as.numeric(data_frame %>% pull(Factor))
+```
+```{r}
+# not checking the outputs 
+# numeric_logical
+# numeric_character
+# numeric_factor
+```
+
+Logical to Numeric: Converting TRUE to 1 and FALSE to 0, then take the mean of numerous 0 and 1!!!!!
+
+Character to Numeric:  Converting makes all entries NA because the strings can't be converted to numbers!!!!!
+
+Factor to Numeric: Converting the factor levels to underlying integer, which allows for mean calculations but it is meaningless because it is just some meaningless numbers and it does not have the original categorical interpretation anymore!!!!!
