@@ -1,24 +1,24 @@
 ---
 title: "p8105_hw1_yy3564"
 author: "Yonghao YU"
-date: "2024-09-17"
+date: "2024-09-20"
 output: html_document
 ---
 ## Question 1
+First, I load the dataset
 ```{r}
-# First, I load the dataset
 data("penguins", package = "palmerpenguins")
-
 ```
-# Then I use inline R code to write a short description
+Then I use inline R code to write a short description:
+
 The name of the dataset is called penguins, the name of each column is `r names(penguins)`.             
 The size of the dataset is `r nrow(penguins)` rows and `r ncol(penguins)` columns.                      
 The mean fipper length is `r mean(penguins$flipper_length_mm, na.rm = TRUE)`.
 
 
 
-```{r}
-# After that I import the library and draw the scatterplot required!
+After that I import the library and draw the scatterplot required!
+```{r, message = FALSE}
 library(tidyverse)
 plotrequired = ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) +
   geom_point() +
@@ -28,17 +28,21 @@ plotrequired = ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, c
     title = "Scatterplot of Flipper Length and Bill Length"
   )
 plotrequired
-# Then I save the plot I have produced!
+```
+Then I save the plot I have produced!
+```{r}
 ggsave(filename = "scatterplot_penguins.png", plot = plotrequired)
 ```
 
 ## Question 2
 
-```{r}
-# Set the random seed and load the tidyverse package
+Set the random seed and load the tidyverse package as required
+```{r, message = FALSE}
 set.seed(200)
 library(tidyverse)
+```
 
+```{r}
 # First, create a random sample of size 10
 sample = rnorm(10)
 
@@ -50,18 +54,16 @@ character = paste("Value", 1:10)
 
 # Last, create a factor vector
 factor = factor(sample(c("Level 1", "Level 2", "Level 3"), 10, replace = TRUE))
-
-# Combine them into one data frame
+```
+Conbine them into one dataframe and display it!
+```{r}
 data_frame = data.frame(
   Sample = sample,
   Logical = logical,
   Character = character,
   Factor = factor
 )
-
-# Display the data frame
 print(data_frame)
-
 ```
 Then calculate the mean for each columns one by one to check whether there are any problems during the calculations!
 
@@ -69,6 +71,7 @@ Then calculate the mean for each columns one by one to check whether there are a
 Sample_mean = mean(data_frame %>% pull(Sample))
 Sample_mean
 ```
+
 ```{r}
 Logical_mean = mean(data_frame %>% pull(Logical))
 Logical_mean
@@ -85,21 +88,25 @@ Factor_mean
 ```
 When I print out these values, it shows obviously that the random sample and logical vector work and the charactor vector and the factor vector do not work!!!
 
+Then converting variables to numeric using pull function
 ```{r}
-# Explicitly convert variables to numeric using pull function
-numeric_logical = as.numeric(data_frame %>% pull(Logical))
-numeric_character = as.numeric(data_frame %>% pull(Character))  
-numeric_factor = as.numeric(data_frame %>% pull(Factor))
+numeric_logical_vector = as.numeric(data_frame %>% pull(Logical))
 ```
 ```{r}
-# not checking the outputs 
-# numeric_logical
-# numeric_character
-# numeric_factor
+numeric_character_vector = as.numeric(data_frame %>% pull(Character))
+```
+```{r}
+numeric_factor_vector = as.numeric(data_frame %>% pull(Factor))
+```
+showing the code chunk but not checking the outputs 
+```{r, eval=FALSE}
+numeric_logical_vector
+numeric_character_vector
+numeric_factor_vector
 ```
 
-Logical to Numeric: Converting TRUE to 1 and FALSE to 0, then take the mean of numerous 0 and 1!!!!!
+Convert Logical vector to Numeric: Converting TRUE to 1 and FALSE to 0, then take the mean of numerous 0 and 1!!!!!
 
-Character to Numeric:  Converting makes all entries NA because the strings can't be converted to numbers!!!!!
+Convert Character vector to Numeric:  Converting makes all entries NA because the strings can't be converted to numbers!!!!!
 
-Factor to Numeric: Converting the factor levels to underlying integer, which allows for mean calculations but it is meaningless because it is just some meaningless numbers and it does not have the original categorical interpretation anymore!!!!!
+Convert Factor vector to Numeric: Converting the factor levels to underlying integer, which allows for mean calculations but it is meaningless because it is just some meaningless numbers and it does not have the original categorical interpretation anymore!!!!!
